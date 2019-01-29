@@ -10,12 +10,15 @@ function setFrame({x, y, width, height, window = Window.focused(), screen = Wind
 }
 
 function moveToScreen({window = Window.focused(), offset = 0}) {
+  const windowFrame = window.frame();
+  const screenFrame = window.screen().flippedVisibleFrame();
+
   setFrame({
-    x: 0.1,
-    y: 0.1,
-    width: 0.8,
-    height: 0.8,
+    x: Math.abs((windowFrame.x - screenFrame.x) / screenFrame.width),
+    y: Math.abs((windowFrame.y - screenFrame.y) / screenFrame.height),
+    width: Math.abs(windowFrame.width / screenFrame.width),
+    height: Math.abs(windowFrame.height / screenFrame.height),
     window,
-    screen: getScreenFromOffset({window, offset})
+    screen: getScreenFromOffset({window, offset}),
   });
 }
